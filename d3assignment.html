@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="d3/d3.min.js"></script>
+		<title>Hello World</title>
+	</head>
+	<body>
+		
+		<script type="text/javascript">
+
+			var dataset = [5,10,15,20,25,30,30,25,20,15,10,5];
+
+			//document.write(dataset);
+
+			// width and height of svg
+			var svgWidth = 500;
+			var svgHeight = 500;
+
+			// space between bars
+			var barPadding = 1;
+
+			// bar width
+			var barWidth = 50;
+
+			// bar height multiplication factor
+			var heightFactor = 2;
+
+			// draw SVG element
+			var svgContainer = d3.select("body")
+				.append("svg")
+				.attr("width", svgWidth)
+				.attr("height", svgHeight);
+
+			svgContainer.selectAll("rect")
+				.data(dataset)
+				.enter()
+				.append("rect")
+				.attr("x", function(d, i) {
+					// divide bars over total width of svgContainer
+					return i * (svgWidth / dataset.length);
+				})
+				.attr("y", function(d) {
+					// = height - data value
+					return svgHeight - d * heightFactor;
+				})
+				.attr("width", svgWidth / dataset.length - barPadding)
+				.attr("height", function(d) {
+					// return just the data value
+					return d * heightFactor;
+				});
+
+		</script>
+	</body>
+</html>
+
+<style type="text/css">
+	div.bar {
+				display: inline-block;
+				width: 20px;
+				height: 75px;
+				margin-right: 2px;
+				background-color: teal;
+			}
+</style>
