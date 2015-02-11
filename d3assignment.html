@@ -14,9 +14,11 @@
 			var svgWidth = 500;
 			var svgHeight = 500;
 
-			var padding = 30;
+			// width of y axis
+			var yAxisWidth = 30;
 
-			var diagramWidth = svgWidth - padding;
+			// width of diagram
+			var diagramWidth = svgWidth - yAxisWidth;
 
 			// space between bars
 			var barPadding = 1;
@@ -47,7 +49,7 @@
 				.append("rect")
 				.attr("x", function(d, i) {
 					// divide bars over total width of svgContainer
-					return i * (diagramWidth / dataset.length) + padding;
+					return i * (diagramWidth / dataset.length) + yAxisWidth;
 				})
 				.attr("y", function(d) {
 					// = height - data value
@@ -69,7 +71,7 @@
 				})
 				.attr("x", function(d, i) {
 					// center label horizontally inside bar
-					return i * (diagramWidth / dataset.length) + (diagramWidth / dataset.length - barPadding) / 2 + padding;
+					return i * (diagramWidth / dataset.length) + (diagramWidth / dataset.length - barPadding) / 2 + yAxisWidth;
 				})
 				.attr("y", function(d) {
 					// = height - data value
@@ -88,7 +90,7 @@
 
 			svgContainer.append("g")
 				.attr("class", "axis")
-				.attr("transform", "translate(" + padding + ",0)")
+				.attr("transform", "translate(" + yAxisWidth + ",0)")
 				.call(yAxis);
 
 		</script>
