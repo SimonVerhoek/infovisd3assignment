@@ -21,13 +21,25 @@
 			var barWidth = 50;
 
 			// bar height multiplication factor
-			var heightFactor = 2;
+			var heightFactor = 1;
 
 			// draw SVG element
 			var svgContainer = d3.select("body")
 				.append("svg")
 				.attr("width", svgWidth)
 				.attr("height", svgHeight);
+
+			// add scale
+    		var yScale = d3.scale.linear()
+    			.domain([0, d3.max(dataset, function(d) {
+    				return d;
+    			})])
+    			.range([0, svgHeight]);
+
+			// add y axis
+			var yAxis = d3.svg.axis()
+				.scale(yScale)
+				.orient("bottom");
 
 			// draw bars
 			svgContainer.selectAll("rect")
@@ -40,12 +52,12 @@
 				})
 				.attr("y", function(d) {
 					// = height - data value
-					return svgHeight - d * heightFactor;
+					return svgHeight - yScale(d) * heightFactor;
 				})
 				.attr("width", svgWidth / dataset.length - barPadding)
 				.attr("height", function(d) {
 					// return just the data value
-					return d * heightFactor;
+					return yScale(d) * heightFactor;
 				});
 
 			// add labels to bars
@@ -62,12 +74,17 @@
 				})
 				.attr("y", function(d) {
 					// = height - data value
-					return svgHeight - d * heightFactor + 15;
+					return svgHeight - yScale(d) * heightFactor + 15;
 				})
 				.attr("font-family", "sans-serif")
 			    .attr("font-size", "11px")
 			    .attr("fill", "white")
 			    .attr("text-anchor", "middle");
+
+		    
+
+			//svgContainer.append("g")
+			//	.call(yAxis);
 
 		</script>
 	</body>
