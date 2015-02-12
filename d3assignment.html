@@ -68,7 +68,10 @@
 				.append("rect")
 				.attr("x", function(d, i) {
 					// divide bars over total width of svgContainer
-					return i * (diagramWidth / dataset.length) + yAxisWidth + axisPadding;
+					return i * 
+						(diagramWidth / dataset.length) + 
+						yAxisWidth + 
+						axisPadding;
 				})
 				.attr("y", function(d) {
 					// = height - data value
@@ -92,7 +95,12 @@
 				})
 				.attr("x", function(d, i) {
 					// center label horizontally inside bar
-					return i * (diagramWidth / dataset.length) + (diagramWidth / dataset.length) / 2 + yAxisWidth + axisPadding - (barPadding / 2);
+					return i * 
+						(diagramWidth / dataset.length) + 
+						(diagramWidth / dataset.length) / 2 +
+						yAxisWidth + 
+						axisPadding - 
+						(barPadding / 2);
 				})
 				.attr("y", function(d) {
 					// = height - data value
@@ -115,7 +123,12 @@
 				})
 				.attr("x", function(d, i) {
 					// center label horizontally inside bar
-					return i * (diagramWidth / dataset.length) + (diagramWidth / dataset.length) / 2 + yAxisWidth + axisPadding - (barPadding / 2);
+					return i * 
+						(diagramWidth / dataset.length) + 
+						(diagramWidth / dataset.length) / 2 +
+						yAxisWidth + 
+						axisPadding - 
+						(barPadding / 2);
 				})
 				.attr("y", function(d) {
 					return diagramHeight + xAxisHeight - 5;
