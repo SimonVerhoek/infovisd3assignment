@@ -30,7 +30,7 @@
 			var barPadding = 1;
 
 			// space between diagram and axes
-			var axisPadding = 1;
+			var axisPadding = 2;
 
 			// bar width
 			var barWidth = 50;
@@ -149,10 +149,23 @@
 
 <style type="text/css">
 	div.bar {
-				display: inline-block;
-				width: 20px;
-				height: 75px;
-				margin-right: 2px;
-				background-color: teal;
-			}
+		display: inline-block;
+		width: 20px;
+		height: 75px;
+		margin-right: 2px;
+		background-color: teal;
+	}
+
+	.axis path,
+	.axis line {
+		fill: none;
+		stroke: black;
+		shape-rendering: crispEdges;
+	}
+
+	.axis text {
+	    font-family: sans-serif;
+	    font-size: 11px;
+	}	
+
 </style>
