@@ -8,6 +8,9 @@
 		
 		<script type="text/javascript">
 
+			/* 
+			 *	DATA
+			 */
 			var dataset = [5,10,15,20,25,30,30,25,20,15,10,5];
 			var labels = ["a","b","c","d","e","f","g","h","i","j","k","l"];
 
@@ -39,9 +42,9 @@
 			var diagramWidth = svgWidth - (yAxisWidth + axisPadding);
 			var diagramHeight = svgHeight - xAxisHeight;
 
-			
-
-			// draw SVG element
+			/* 
+			 *	DRAW SVG CONTAINER
+			 */
 			var svgContainer = d3.select("body")
 				.append("svg")
 				.attr("width", svgWidth)
