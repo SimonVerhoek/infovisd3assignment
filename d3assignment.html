@@ -11,7 +11,7 @@
 			/* 
 			 *	DATA
 			 */
-			var dataset = [5,10,15,20,25,30,30,25,20,15,10,5];
+			var testDataset = [5,10,15,20,25,30,30,25,20,15,10,5];
 			var labels = ["a","b","c","d","e","f","g","h","i","j","k","l"];
 			var years = [2015];
 
@@ -46,6 +46,14 @@
 			/* 
 			 *	DRAW SVG CONTAINER
 			 */
+		 	d3.csv("meteo.csv", function(data) {
+		 		console.log(data);
+		 	})
+
+
+			/* 
+			 *	DRAW SVG CONTAINER
+			 */
 			var svgContainer = d3.select("body")
 				.append("svg")
 				.attr("width", svgWidth)
@@ -55,7 +63,7 @@
 			 *	ADD Y SCALE
 			 */
     		var yScale = d3.scale.linear()
-    			.domain([0, d3.max(dataset, function(d) {
+    			.domain([0, d3.max(testDataset, function(d) {
     				return d;
     			})])
     			.range([diagramHeight, 0]);	
@@ -64,13 +72,13 @@
 			 *	DRAW BARS
 			 */
 			svgContainer.selectAll("rect")
-				.data(dataset)
+				.data(testDataset)
 				.enter()
 				.append("rect")
 				.attr("x", function(d, i) {
 					// divide bars over total width of svgContainer
 					return i * 
-						(diagramWidth / dataset.length) + 
+						(diagramWidth / testDataset.length) + 
 						yAxisWidth + 
 						axisPadding;
 				})
@@ -78,7 +86,7 @@
 					// = height - data value
 					return yScale(d) * heightFactor;
 				})
-				.attr("width", diagramWidth / dataset.length - barPadding)
+				.attr("width", diagramWidth / testDataset.length - barPadding)
 				.attr("height", function(d) {
 					// return just the data value
 					return (diagramHeight - yScale(d)) * heightFactor;
@@ -88,7 +96,7 @@
 			 *	ADD VALUE TO BARS
 			 */
 			svgContainer.selectAll("text")
-				.data(dataset)
+				.data(testDataset)
 				.enter()
 				.append("text")
 				.text(function(d) {
@@ -97,8 +105,8 @@
 				.attr("x", function(d, i) {
 					// center label horizontally inside bar
 					return i * 
-						(diagramWidth / dataset.length) + 
-						(diagramWidth / dataset.length) / 2 +
+						(diagramWidth / testDataset.length) + 
+						(diagramWidth / testDataset.length) / 2 +
 						yAxisWidth + 
 						axisPadding - 
 						(barPadding / 2);
@@ -125,8 +133,8 @@
 				.attr("x", function(d, i) {
 					// center label horizontally inside bar
 					return i * 
-						(diagramWidth / dataset.length) + 
-						(diagramWidth / dataset.length) / 2 +
+						(diagramWidth / testDataset.length) + 
+						(diagramWidth / testDataset.length) / 2 +
 						yAxisWidth + 
 						axisPadding - 
 						(barPadding / 2);
