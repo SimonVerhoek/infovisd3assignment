@@ -95,7 +95,7 @@
 				})
 				.attr("x", function(d, i) {
 					// center label horizontally inside bar
-					return i * (diagramWidth / dataset.length) + (diagramWidth / dataset.length) / 2 + yAxisWidth + barPadding;
+					return i * (diagramWidth / dataset.length) + (diagramWidth / dataset.length) / 2 + yAxisWidth + axisPadding - (barPadding / 2);
 				})
 				.attr("y", function(d) {
 					// = height - data value
@@ -118,7 +118,7 @@
 				})
 				.attr("x", function(d, i) {
 					// center label horizontally inside bar
-					return i * (diagramWidth / dataset.length) + (diagramWidth / dataset.length) / 2 + yAxisWidth + barPadding;
+					return i * (diagramWidth / dataset.length) + (diagramWidth / dataset.length) / 2 + yAxisWidth + axisPadding - (barPadding / 2);
 				})
 				.attr("y", function(d) {
 					return diagramHeight + xAxisHeight - 5;
