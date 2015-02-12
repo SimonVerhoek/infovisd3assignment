@@ -10,6 +10,10 @@
 
 			var dataset = [5,10,15,20,25,30,30,25,20,15,10,5];
 
+			/* 
+			 *	STATIC VALUES
+			 */
+			 
 			// width and height of svg
 			var svgWidth = 500;
 			var svgHeight = 500;
@@ -42,6 +46,10 @@
 				.attr("width", svgWidth)
 				.attr("height", svgHeight);
 
+			/* 
+			 *	SCALES
+			 */
+
 			// add x scale
 			var xScale = d3.scale.linear()
 				.domain([0,100])
@@ -54,7 +62,10 @@
     			})])
     			.range([0, diagramHeight]);	
 
-			// draw bars
+
+			/* 
+			 *	DRAW BARS
+			 */
 			svgContainer.selectAll("rect")
 				.data(dataset)
 				.enter()
@@ -73,7 +84,9 @@
 					return yScale(d) * heightFactor;
 				});
 
-			// add labels to bars
+			/* 
+			 *	ADD LABELS TO BARS
+			 */
 			svgContainer.selectAll("text")
 				.data(dataset)
 				.enter()
@@ -93,6 +106,10 @@
 			    .attr("font-size", "11px")
 			    .attr("fill", "white")
 			    .attr("text-anchor", "middle");
+
+		    /* 
+			 *	CREATE AXES
+			 */
 
 		    // create x axis
 			var xAxis = d3.svg.axis()
