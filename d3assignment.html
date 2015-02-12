@@ -9,18 +9,19 @@
 		<script type="text/javascript">
 
 			var dataset = [5,10,15,20,25,30,30,25,20,15,10,5];
+			var labels = ["a","b","c","d","e","f","g","h","i","j","k","l"];
 
 			/* 
 			 *	STATIC VALUES
 			 */
-			 
+
 			// width and height of svg
 			var svgWidth = 500;
 			var svgHeight = 500;
 
 			// width of axis
 			var yAxisWidth = 30;
-			var xAxisHeight = 30;
+			var xAxisHeight = 15;
 
 			// space between bars
 			var barPadding = 1;
@@ -49,11 +50,6 @@
 			/* 
 			 *	SCALES
 			 */
-
-			// add x scale
-			var xScale = d3.scale.linear()
-				.domain([0,100])
-				.range([0,400]);
 
 			// add y scale
     		var yScale = d3.scale.linear()
@@ -107,21 +103,27 @@
 			    .attr("fill", "white")
 			    .attr("text-anchor", "middle");
 
+			svgContainer.selectAll("label")
+				.data(labels)
+				.enter()
+				.append("text")
+				.text(function(d) {
+					return d;
+				})
+				.attr("x", function(d, i) {
+					// center label horizontally inside bar
+					return i * (diagramWidth / dataset.length) + (diagramWidth / dataset.length - barPadding) / 2 + yAxisWidth;
+				})
+				.attr("y", function(d) {
+					return diagramHeight + xAxisHeight - 5;
+				})
+				.attr("font-family", "sans-serif")
+			    .attr("font-size", "11px")
+			    .attr("text-anchor", "middle");
+
 		    /* 
-			 *	CREATE AXES
+			 *	CREATE Y AXIS
 			 */
-
-		    // create x axis
-			var xAxis = d3.svg.axis()
-				.scale(xScale)
-				.orient("bottom")
-				.ticks(5);
-
-			// call x axis
-			svgContainer.append("g")
-				.attr("class", "axis")
-				.attr("transform", "translate(" + yAxisWidth + "," + (diagramHeight + axisPadding) + ")")
-				.call(xAxis);
 
 		    // create y axis
 			var yAxis = d3.svg.axis()
@@ -134,8 +136,6 @@
 				.attr("class", "axis")
 				.attr("transform", "translate(" + yAxisWidth + ",0)")
 				.call(yAxis);
-
-			
 
 		</script>
 	</body>
