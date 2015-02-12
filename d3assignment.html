@@ -51,16 +51,13 @@
 				.attr("height", svgHeight);
 
 			/* 
-			 *	SCALES
+			 *	ADD Y SCALE
 			 */
-
-			// add y scale
     		var yScale = d3.scale.linear()
     			.domain([0, d3.max(dataset, function(d) {
     				return d;
     			})])
     			.range([diagramHeight, 0]);	
-
 
 			/* 
 			 *	DRAW BARS
