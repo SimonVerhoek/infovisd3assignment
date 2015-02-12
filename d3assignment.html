@@ -13,6 +13,7 @@
 			 */
 			var dataset = [5,10,15,20,25,30,30,25,20,15,10,5];
 			var labels = ["a","b","c","d","e","f","g","h","i","j","k","l"];
+			var years = [2015];
 
 			/* 
 			 *	STATIC VALUES
@@ -82,6 +83,22 @@
 					// return just the data value
 					return (diagramHeight - yScale(d)) * heightFactor;
 				});
+
+			/* 
+			 *	ADD YEAR LABEL TO DIAGRAM
+			 */
+			svgContainer.selectAll("year")
+				.data(years)
+				.enter()
+				.append("text")
+				.text(function(d) {
+					return d
+				})
+				.attr("x", 50)
+				.attr("y", 40)
+				.attr("font-family", "sans-serif")
+				.attr("font-size", "20px")
+				.attr("font-weight", "bold")
 
 			/* 
 			 *	ADD VALUE TO BARS
