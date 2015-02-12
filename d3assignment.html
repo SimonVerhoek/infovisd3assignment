@@ -16,6 +16,7 @@
 			var years = [2015];
 
 			var dataset;
+			//dataset[i].temperature
 
 			/* 
 			 *	STATIC VALUES
@@ -46,147 +47,163 @@
 			var diagramHeight = svgHeight - xAxisHeight;
 
 			/* 
-			 *	IMPORT DATA FROM METEO.CSV
+			 *	IMPORT AND PROCESS DATA FROM METEO.CSV
 			 */
 		 	d3.csv("meteo.csv", function(error, data) {
 		 		// If error is not null, something went wrong.
 		 		if (error) {  
           			console.log(error);
 		        } else {      
-		        	console.log(data[1]); 
+		        	console.log(data[0]); 
 		        }
 
-	 			// Once loaded, copy to global var dataset
-	 			dataset = data;		
+		        // change some of string data into ints
+	 			for (var i = 0; i < data.length; i++) {
+		 			data[i].temperature = parseInt(data[i].temperature);
+		 			data[i].month = parseInt(data[i].month);
+		 			data[i].year = parseInt(data[i].year);
+		 		}
+
+		 		// should become array with 3 values:
+		 		// - year
+		 		// - month
+		 		// - mean temperature in that month
+
+		 		// output data
+		 		//test(dataset);		
 		 	})
 
+		 	
+		 	function test(dataset) {
+		 		/* 
+				 *	DRAW SVG CONTAINER
+				 */
+				var svgContainer = d3.select("body")
+					.append("svg")
+					.attr("width", svgWidth)
+					.attr("height", svgHeight);
 
-			/* 
-			 *	DRAW SVG CONTAINER
-			 */
-			var svgContainer = d3.select("body")
-				.append("svg")
-				.attr("width", svgWidth)
-				.attr("height", svgHeight);
+				/* 
+				 *	ADD Y SCALE
+				 */
+	    		var yScale = d3.scale.linear()
+	    			.domain([0, d3.max(dataset, function(d) {
+	    				return d.temperature;
+	    			})])
+	    			.range([diagramHeight, 0]);	
 
-			/* 
-			 *	ADD Y SCALE
-			 */
-    		var yScale = d3.scale.linear()
-    			.domain([0, d3.max(testDataset, function(d) {
-    				return d;
-    			})])
-    			.range([diagramHeight, 0]);	
+				/* 
+				 *	DRAW BARS
+				 */
+				svgContainer.selectAll("rect")
+					.data(dataset)
+					.enter()
+					.append("rect")
+					.attr("x", function(d, i) {
+						// divide bars over total width of svgContainer
+						return i * 
+							(diagramWidth / dataset.length) + 
+							yAxisWidth + 
+							axisPadding;
+					})
+					.attr("y", function(d) {
+						// = height - data value
+						return yScale(d.temperature) * heightFactor;
+					})
+					.attr("width", diagramWidth / dataset.length - barPadding)
+					.attr("height", function(d) {
+						// return just the data value
+						return (diagramHeight - yScale(d)) * heightFactor;
+					});
 
-			/* 
-			 *	DRAW BARS
-			 */
-			svgContainer.selectAll("rect")
-				.data(testDataset)
-				.enter()
-				.append("rect")
-				.attr("x", function(d, i) {
-					// divide bars over total width of svgContainer
-					return i * 
-						(diagramWidth / testDataset.length) + 
-						yAxisWidth + 
-						axisPadding;
-				})
-				.attr("y", function(d) {
-					// = height - data value
-					return yScale(d) * heightFactor;
-				})
-				.attr("width", diagramWidth / testDataset.length - barPadding)
-				.attr("height", function(d) {
-					// return just the data value
-					return (diagramHeight - yScale(d)) * heightFactor;
-				});
+				/* 
+				 *	ADD VALUE TO BARS
+				 */
+				svgContainer.selectAll("text")
+					.data(dataset)
+					.enter()
+					.append("text")
+					.text(function(d) {
+						return d;
+					})
+					.attr("x", function(d, i) {
+						// center label horizontally inside bar
+						return i * 
+							(diagramWidth / dataset.length) + 
+							(diagramWidth / dataset.length) / 2 +
+							yAxisWidth + 
+							axisPadding - 
+							(barPadding / 2);
+					})
+					.attr("y", function(d) {
+						// = height - data value
+						return yScale(d) * heightFactor + 15;
+					})
+					.attr("font-family", "sans-serif")
+				    .attr("font-size", "11px")
+				    .attr("fill", "white")
+				    .attr("text-anchor", "middle");
 
-			/* 
-			 *	ADD VALUE TO BARS
-			 */
-			svgContainer.selectAll("text")
-				.data(testDataset)
-				.enter()
-				.append("text")
-				.text(function(d) {
-					return d;
-				})
-				.attr("x", function(d, i) {
-					// center label horizontally inside bar
-					return i * 
-						(diagramWidth / testDataset.length) + 
-						(diagramWidth / testDataset.length) / 2 +
-						yAxisWidth + 
-						axisPadding - 
-						(barPadding / 2);
-				})
-				.attr("y", function(d) {
-					// = height - data value
-					return yScale(d) * heightFactor + 15;
-				})
-				.attr("font-family", "sans-serif")
-			    .attr("font-size", "11px")
-			    .attr("fill", "white")
-			    .attr("text-anchor", "middle");
+				/* 
+				 *	ADD LABELS UNDERNEATH BARS
+				 */
+				svgContainer.selectAll("label")
+					.data(labels)
+					.enter()
+					.append("text")
+					.text(function(d) {
+						return d;
+					})
+					.attr("x", function(d, i) {
+						// center label horizontally inside bar
+						return i * 
+							(diagramWidth / dataset.length) + 
+							(diagramWidth / dataset.length) / 2 +
+							yAxisWidth + 
+							axisPadding - 
+							(barPadding / 2);
+					})
+					.attr("y", function(d) {
+						return diagramHeight + xAxisHeight - 5;
+					})
+					.attr("font-family", "sans-serif")
+				    .attr("font-size", "11px")
+				    .attr("text-anchor", "middle");
 
-			/* 
-			 *	ADD LABELS UNDERNEATH BARS
-			 */
-			svgContainer.selectAll("label")
-				.data(labels)
-				.enter()
-				.append("text")
-				.text(function(d) {
-					return d;
-				})
-				.attr("x", function(d, i) {
-					// center label horizontally inside bar
-					return i * 
-						(diagramWidth / testDataset.length) + 
-						(diagramWidth / testDataset.length) / 2 +
-						yAxisWidth + 
-						axisPadding - 
-						(barPadding / 2);
-				})
-				.attr("y", function(d) {
-					return diagramHeight + xAxisHeight - 5;
-				})
-				.attr("font-family", "sans-serif")
-			    .attr("font-size", "11px")
-			    .attr("text-anchor", "middle");
+			    /* 
+				 *	ADD YEAR LABEL TO DIAGRAM
+				 */
+				svgContainer.selectAll("year")
+					.data(years)
+					.enter()
+					.append("text")
+					.text(function(d) {
+						return d
+					})
+					.attr("x", 50)
+					.attr("y", 40)
+					.attr("font-family", "sans-serif")
+					.attr("font-size", "20px")
+					.attr("font-weight", "bold");
 
-		    /* 
-			 *	ADD YEAR LABEL TO DIAGRAM
-			 */
-			svgContainer.selectAll("year")
-				.data(years)
-				.enter()
-				.append("text")
-				.text(function(d) {
-					return d
-				})
-				.attr("x", 50)
-				.attr("y", 40)
-				.attr("font-family", "sans-serif")
-				.attr("font-size", "20px")
-				.attr("font-weight", "bold");
+			    /* 
+				 *	CREATE Y AXIS
+				 */
 
-		    /* 
-			 *	CREATE Y AXIS
-			 */
+			    // create y axis
+				var yAxis = d3.svg.axis()
+					.scale(yScale)
+					.orient("left")
+					.ticks(5);
 
-		    // create y axis
-			var yAxis = d3.svg.axis()
-				.scale(yScale)
-				.orient("left")
-				.ticks(5);
+				// call y axis
+				svgContainer.append("g")
+					.attr("class", "axis")
+					.attr("transform", "translate(" + yAxisWidth + ",0)")
+					.call(yAxis);
+		 	}
 
-			// call y axis
-			svgContainer.append("g")
-				.attr("class", "axis")
-				.attr("transform", "translate(" + yAxisWidth + ",0)")
-				.call(yAxis);
+			
 
 		</script>
 	</body>
