@@ -18,12 +18,11 @@
 			var yAxisWidth = 30;
 			var xAxisHeight = 30;
 
-			// width of diagram
-			var diagramWidth = svgWidth - yAxisWidth;
-			var diagramHeight = svgHeight - xAxisHeight;
-
 			// space between bars
 			var barPadding = 1;
+
+			// space between diagram and axes
+			var axisPadding = 1;
 
 			// bar width
 			var barWidth = 50;
@@ -31,18 +30,29 @@
 			// bar height multiplication factor
 			var heightFactor = 1;
 
+			// width of diagram
+			var diagramWidth = svgWidth - (yAxisWidth + axisPadding);
+			var diagramHeight = svgHeight - xAxisHeight;
+
+			
+
 			// draw SVG element
 			var svgContainer = d3.select("body")
 				.append("svg")
 				.attr("width", svgWidth)
 				.attr("height", svgHeight);
 
+			// add x scale
+			var xScale = d3.scale.linear()
+				.domain([0,100])
+				.range([0,400]);
+
 			// add y scale
     		var yScale = d3.scale.linear()
     			.domain([0, d3.max(dataset, function(d) {
     				return d;
     			})])
-    			.range([0, diagramHeight]);
+    			.range([0, diagramHeight]);	
 
 			// draw bars
 			svgContainer.selectAll("rect")
@@ -51,7 +61,7 @@
 				.append("rect")
 				.attr("x", function(d, i) {
 					// divide bars over total width of svgContainer
-					return i * (diagramWidth / dataset.length) + yAxisWidth;
+					return i * (diagramWidth / dataset.length) + yAxisWidth + axisPadding;
 				})
 				.attr("y", function(d) {
 					// = height - data value
@@ -84,16 +94,31 @@
 			    .attr("fill", "white")
 			    .attr("text-anchor", "middle");
 
-		    // add y axis
+		    // create x axis
+			var xAxis = d3.svg.axis()
+				.scale(xScale)
+				.orient("bottom")
+				.ticks(5);
+
+			// call x axis
+			svgContainer.append("g")
+				.attr("class", "axis")
+				.attr("transform", "translate(" + yAxisWidth + "," + (diagramHeight + axisPadding) + ")")
+				.call(xAxis);
+
+		    // create y axis
 			var yAxis = d3.svg.axis()
 				.scale(yScale)
 				.orient("left")
 				.ticks(5);
 
+			// call y axis
 			svgContainer.append("g")
 				.attr("class", "axis")
 				.attr("transform", "translate(" + yAxisWidth + ",0)")
 				.call(yAxis);
+
+			
 
 		</script>
 	</body>
