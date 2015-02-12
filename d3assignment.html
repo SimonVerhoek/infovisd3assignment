@@ -46,7 +46,7 @@
 			var diagramHeight = svgHeight - xAxisHeight;
 
 			/* 
-			 *	DRAW SVG CONTAINER
+			 *	IMPORT DATA FROM METEO.CSV
 			 */
 		 	d3.csv("meteo.csv", function(error, data) {
 		 		// If error is not null, something went wrong.
@@ -56,7 +56,8 @@
 		        	console.log(data[1]); 
 		        }
 
-	 			dataset = data;		// Once loaded, copy to dataset.
+	 			// Once loaded, copy to global var dataset
+	 			dataset = data;		
 		 	})
 
 
