@@ -15,7 +15,7 @@
 			var labels = ["a","b","c","d","e","f","g","h","i","j","k","l"];
 			var years = [2015];
 
-			var dataset;
+			var dataset = [];
 			//dataset[i].temperature
 
 			/* 
@@ -57,17 +57,47 @@
 		        	console.log(data[0]); 
 		        }
 
-		        // change some of string data into ints
+		        // change string data into ints
 	 			for (var i = 0; i < data.length; i++) {
+	 				data[i].day = parseInt(data[i].day);
 		 			data[i].temperature = parseInt(data[i].temperature);
 		 			data[i].month = parseInt(data[i].month);
 		 			data[i].year = parseInt(data[i].year);
 		 		}
 
-		 		// should become array with 3 values:
-		 		// - year
-		 		// - month
-		 		// - mean temperature in that month
+	 			// create object with mean temperature for every month
+	 			var meanTemp = 0;
+	 			var totalTemp = 0;
+	 			var noTemps = 0;
+
+	 			for (i = 0; i < data.length; i++) 
+	 			{
+					totalTemp += data[i].temperature;
+ 					noTemps++;
+
+	 				// if last day of month, save object in dataset & reset counters
+	 				if (data[i].day === 31 || data[i+1].month != data[i].month)
+	 				{
+	 					meanTemp = Math.round(totalTemp / noTemps) / 10;
+
+	 					dataset.push({year: data[i-1].year, month: data[i-1].month, meanTemp: meanTemp});
+
+	 					totalTemp = 0;
+	 					noTemps = 0;
+	 				}
+
+	 				
+
+	 			}
+
+	 			// calculate mean temperature for whole year
+	 			var meanTemp = Math.round(totalTemp / noTemps) / 10;
+
+	 			console.log("totalTemp = " + totalTemp);
+	 			console.log("noTemps = " + noTemps);
+	 			console.log("meanTemp = " + meanTemp);
+
+	 			console.log(dataset);
 
 		 		// output data
 		 		//test(dataset);		
