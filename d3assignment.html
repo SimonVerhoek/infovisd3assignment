@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<script type="text/javascript" src="d3/d3.min.js"></script>
+		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 		<title>Hello World</title>
 	</head>
 	<body>
@@ -13,7 +14,6 @@
 			 */
 			var testDataset = [5,10,15,20,25,30,30,25,20,15,10,5];
 			var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-			var years = [2015];
 
 			var dataset = [];
 			//dataset[i].temperature
@@ -198,11 +198,11 @@
 				 *	ADD YEAR LABEL TO DIAGRAM
 				 */
 				svgContainer.selectAll("year")
-					.data(years)
+					.data(dataset)
 					.enter()
 					.append("text")
 					.text(function(d) {
-						return d
+						return d.year
 					})
 					.attr("x", 50)
 					.attr("y", 40)
