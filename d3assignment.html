@@ -12,7 +12,7 @@
 			 *	DATA
 			 */
 			var testDataset = [5,10,15,20,25,30,30,25,20,15,10,5];
-			var labels = ["a","b","c","d","e","f","g","h","i","j","k","l"];
+			var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 			var years = [2015];
 
 			var dataset = [];
@@ -166,7 +166,7 @@
 				 *	ADD LABELS UNDERNEATH BARS
 				 */
 				svgContainer.selectAll("label")
-					.data(labels)
+					.data(months)
 					.enter()
 					.append("text")
 					.text(function(d) {
