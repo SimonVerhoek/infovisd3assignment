@@ -70,14 +70,12 @@
 	 			var totalTemp = 0;
 	 			var noTemps = 0;
 
-	 			for (i = 0; i < data.length; i++) 
-	 			{
+	 			for (i = 0; i < data.length; i++) {
 					totalTemp += data[i].temperature;
  					noTemps++;
 
 	 				// if last day of month, save object in dataset & reset counters
-	 				if (data[i].day === 31 || data[i+1].month != data[i].month)
-	 				{
+	 				if (data[i].day === 31 || data[i+1].month != data[i].month) {
 	 					meanTemp = Math.round(totalTemp / noTemps) / 10;
 
 	 					dataset.push({year: data[i-1].year, month: data[i-1].month, meanTemp: meanTemp});
@@ -85,9 +83,6 @@
 	 					totalTemp = 0;
 	 					noTemps = 0;
 	 				}
-
-	 				
-
 	 			}
 
 	 			// calculate mean temperature for whole year
