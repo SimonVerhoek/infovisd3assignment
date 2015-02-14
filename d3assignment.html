@@ -66,6 +66,7 @@
 		 		}
 
 	 			// create object with mean temperature for every month
+	 			var maxTemp = 0;
 	 			var meanTemp = 0;
 	 			var totalTemp = 0;
 	 			var noTemps = 0;
@@ -78,6 +79,11 @@
 	 				if (data[i].day === 31 || data[i+1].month != data[i].month) {
 	 					meanTemp = Math.round(totalTemp / noTemps) / 10;
 
+	 					// record maximum temperature for yScale
+	 					if (meanTemp > maxTemp) {
+	 						maxTemp = meanTemp;
+	 					}
+
 	 					dataset.push({year: data[i-1].year, month: data[i-1].month, meanTemp: meanTemp});
 
 	 					totalTemp = 0;
@@ -86,12 +92,12 @@
 	 			}
 
 	 			console.log(dataset);
+	 			console.log("max mean temperature = " + maxTemp);
 
 		 		// output data
-		 		//test(dataset);		
-		 	})
+		 		test(dataset);		
+		 	});
 
-		 	
 		 	function test(dataset) {
 		 		/* 
 				 *	DRAW SVG CONTAINER
@@ -105,10 +111,10 @@
 				 *	ADD Y SCALE
 				 */
 	    		var yScale = d3.scale.linear()
-	    			.domain([0, d3.max(dataset, function(d) {
-	    				return d.temperature;
+	    			.domain([-1, d3.max(dataset, function(d) {
+	    				return d.meanTemp;
 	    			})])
-	    			.range([diagramHeight, 0]);	
+	    			.range([diagramHeight, -1]);	
 
 				/* 
 				 *	DRAW BARS
@@ -125,13 +131,13 @@
 							axisPadding;
 					})
 					.attr("y", function(d) {
-						// = height - data value
-						return yScale(d.temperature) * heightFactor;
+						// = height - data value (bars get drawn from top-left corner)
+						return yScale(d.meanTemp) * heightFactor;
 					})
 					.attr("width", diagramWidth / dataset.length - barPadding)
 					.attr("height", function(d) {
-						// return just the data value
-						return (diagramHeight - yScale(d)) * heightFactor;
+						// return height of bar, rightly scaled
+						return (diagramHeight - yScale(d.meanTemp)) * heightFactor;
 					});
 
 				/* 
