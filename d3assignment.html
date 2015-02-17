@@ -15,7 +15,7 @@
 			var testDataset = [5,10,15,20,25,30,30,25,20,15,10,5];
 			var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
-			var dataset = [];
+			var dataset = {};
 			//dataset[i].temperature
 
 			/* 
@@ -70,10 +70,25 @@
 	 			var meanTemp = 0;
 	 			var totalTemp = 0;
 	 			var noTemps = 0;
+	 			
+	 			// prepare nested JSON structure
+	 			var year = data[0].year;
+	 			var month = data[0].month;
 
+	 			dataset[year] = {};
+	 			dataset[year][month] = {};
+
+	 			// for every line in csv file
 	 			for (i = 0; i < data.length; i++) {
+
 					totalTemp += data[i].temperature;
  					noTemps++;
+
+ 					// if first month of new year, create new year object
+ 					if (data[i].month === 1) {
+ 						year = data[i].year;
+ 						dataset[year] = {};
+ 					}
 
 	 				// if last day of month, save object in dataset & reset counters
 	 				if (data[i].day === 31 || data[i+1].month != data[i].month) {
@@ -84,18 +99,22 @@
 	 						maxTemp = meanTemp;
 	 					}
 
-	 					dataset.push({year: data[i-1].year, month: data[i-1].month, meanTemp: meanTemp});
+	 					// set month
+	 					month = data[i].month;
 
+	 					// push month object in year object
+	 					dataset[year][month] = {year: data[i-1].year, month: data[i-1].month, meanTemp: meanTemp};
+
+	 					// reset values
 	 					totalTemp = 0;
 	 					noTemps = 0;
 	 				}
 	 			}
 
 	 			console.log(dataset);
-	 			console.log("max mean temperature = " + maxTemp);
 
 		 		// output data
-		 		test(dataset);		
+		 		//test(dataset);		
 		 	});
 
 		 	function test(dataset) {
