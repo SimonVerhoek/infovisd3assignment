@@ -134,14 +134,15 @@
 					return d3.max(d3.values(d));
 				}) );
 
-				console.log("test2 = " + dataset[2010][1].meanTemp);
+				//console.log("test2 = " + dataset[2010][1].meanTemp);
 
 	    		var yScale = d3.scale.linear()
-	    			.domain([-1, dataset[2010][1].meanTemp])
-	    			/*.domain([-1, d3.max(dataset, function(d) {
-	    				return d[2010][1].meanTemp;
-	    			})]))*/
-	    			.range([diagramHeight, -1]);	
+	    			.domain([-1, d3.max(d3.values(dataset[2010]), function(d) {
+	    				return d3.max(d3.values(d));
+	    			}) ])
+	    			.range([diagramHeight, -1]);
+
+    			console.log("yScale = " + yScale(dataset[2010][1]));
 
 				/* 
 				 *	DRAW BARS
@@ -159,12 +160,12 @@
 					})
 					.attr("y", function(d) {
 						// = height - data value (bars get drawn from top-left corner)
-						return yScale(d.meanTemp) * heightFactor;
+						return yScale(d) * heightFactor;
 					})
 					.attr("width", diagramWidth / dataset.length - barPadding)
 					.attr("height", function(d) {
 						// return height of bar, rightly scaled
-						return (diagramHeight - yScale(d.meanTemp)) * heightFactor;
+						return (diagramHeight - yScale(d)) * heightFactor;
 					});
 
 				/* 
