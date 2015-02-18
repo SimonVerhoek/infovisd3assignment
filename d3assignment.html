@@ -17,14 +17,17 @@
 
 			var bars;
 			var svgContainer;
+
+
 			/* 
 			 *	STATIC VALUES
 			 */
-
 			// width and height of svg
 			var svgWidth = 500,
-				svgHeight = 500,
-				yAxisWidth = 30,
+				svgHeight = 500;
+
+			// width and height of axes
+			var	yAxisWidth = 30,
 				xAxisHeight = 15;
 
 			// space between bars
@@ -37,11 +40,11 @@
 			var barWidth = 50;
 
 			// width of diagram
-			var diagramWidth = svgWidth - (yAxisWidth + axisPadding);
-			var diagramHeight = svgHeight - xAxisHeight;
+			var diagramWidth = svgWidth - (yAxisWidth + axisPadding),
+				diagramHeight = svgHeight - xAxisHeight;
 
-			var years = 0;
-			var yearNo = 0;
+			var years = 0,
+				yearNo = 0;
 
 			/* 
 			 *	IMPORT AND PROCESS DATA FROM METEO.CSV
