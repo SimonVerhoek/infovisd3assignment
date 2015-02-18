@@ -46,6 +46,9 @@
 			var diagramWidth = svgWidth - (yAxisWidth + axisPadding);
 			var diagramHeight = svgHeight - xAxisHeight;
 
+			var years = 0;
+			var yearNo = 0;
+
 			/* 
 			 *	IMPORT AND PROCESS DATA FROM METEO.CSV
 			 */
@@ -105,6 +108,12 @@
 	 				}
 	 			}
 
+	 			year = data[0].year;
+
+	 			years = d3.keys(dataset);
+
+	 			console.log("years = " + years);
+
 	 			console.log(dataset);
 
 		 		// output data
@@ -124,14 +133,14 @@
 				 *	ADD Y SCALE
 				 */
 	    		var yScale = d3.scale.linear()
-	    			.domain([-5, d3.max(d3.values(dataset[2010])) ])
+	    			.domain([-5, d3.max(d3.values(dataset[years[yearNo]])) ])
 	    			.range([diagramHeight, -1]);
 
 				/* 
 				 *	DRAW BARS
 				 */
 				svgContainer.selectAll("rect")
-					.data(d3.values(dataset[2010]))
+					.data(d3.values(dataset[years[yearNo]]))
 					.enter()
 					.append("rect")
 					.attr("x", function(d, i) {
@@ -155,7 +164,7 @@
 				 *	ADD VALUE TO BARS
 				 */
 				svgContainer.selectAll("text")
-					.data(d3.values(dataset[2010]))
+					.data(d3.values(dataset[years[yearNo]]))
 					.enter()
 					.append("text")
 					.text(function(d) {
@@ -208,12 +217,12 @@
 			    /* 
 				 *	ADD YEAR LABEL TO DIAGRAM
 				 */
-				svgContainer.selectAll("year")
-					.data(d3.values(dataset[2010]))
+				svgContainer.selectAll("years")
+					.data(d3.values(dataset[years[yearNo]]))
 					.enter()
 					.append("text")
 					.text(function(d) {
-						return 2010;
+						return years[yearNo];
 					})
 					.attr("x", 50)
 					.attr("y", 40)
