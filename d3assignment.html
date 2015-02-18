@@ -2,7 +2,6 @@
 <html>
 	<head>
 		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-		<title>Hello World</title>
 	</head>
 	<body>
 		
@@ -23,8 +22,8 @@
 			 *	STATIC VALUES
 			 */
 			// width and height of svg
-			var svgWidth = 500,
-				svgHeight = 500;
+			var graphWidth = 500,
+				graphHeight = 500;
 
 			// width and height of axes
 			var	yAxisWidth = 30,
@@ -40,8 +39,8 @@
 			var barWidth = 50;
 
 			// width of diagram
-			var diagramWidth = svgWidth - (yAxisWidth + axisPadding),
-				diagramHeight = svgHeight - xAxisHeight;
+			var diagramWidth = graphWidth - (yAxisWidth + axisPadding),
+				diagramHeight = graphHeight - xAxisHeight;
 
 			var years = 0,
 				yearNo = 0;
@@ -139,8 +138,8 @@
 				 */
 				svgContainer = d3.select("body")
 					.append("svg")
-					.attr("width", svgWidth)
-					.attr("height", svgHeight);
+					.attr("width", graphWidth)
+					.attr("height", graphHeight);
 
 				/* 
 				 *	ADD Y SCALE
