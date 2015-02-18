@@ -66,7 +66,6 @@
 		 		}
 
 	 			// create object with mean temperature for every month
-	 			var maxTemp = 0;
 	 			var meanTemp = 0;
 	 			var totalTemp = 0;
 	 			var noTemps = 0;
@@ -94,11 +93,6 @@
 	 				if (data[i].day === 31 || data[i+1].month != data[i].month) {
 	 					meanTemp = Math.round(totalTemp / noTemps) / 10;
 
-	 					// record maximum temperature for yScale
-	 					if (meanTemp > maxTemp) {
-	 						maxTemp = meanTemp;
-	 					}
-
 	 					// set month
 	 					month = data[i].month;
 
@@ -114,10 +108,10 @@
 	 			console.log(dataset);
 
 		 		// output data
-		 		test(dataset);		
+		 		makeGraph(dataset);		
 		 	});
 
-		 	function test(dataset) {
+		 	function makeGraph(dataset) {
 		 		/* 
 				 *	DRAW SVG CONTAINER
 				 */
@@ -129,16 +123,9 @@
 				/* 
 				 *	ADD Y SCALE
 				 */
-
-				console.log("test = " + d3.max(d3.values(dataset[2010])) );
-
-				//console.log("test2 = " + dataset[2010][1].meanTemp);
-
 	    		var yScale = d3.scale.linear()
-	    			.domain([-1, d3.max(d3.values(dataset[2010]))])
+	    			.domain([-5, d3.max(d3.values(dataset[2010])) ])
 	    			.range([diagramHeight, -1]);
-
-    			console.log("yScale = " + yScale(dataset[2010][1]));
 
 				/* 
 				 *	DRAW BARS
