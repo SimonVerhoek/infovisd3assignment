@@ -12,11 +12,9 @@
 			/* 
 			 *	DATA
 			 */
-			var testDataset = [5,10,15,20,25,30,30,25,20,15,10,5];
+			var dataset = {};
 			var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
-			var dataset = {};
-			//dataset[i].temperature
 
 			var bars;
 			var svgContainer;
@@ -25,12 +23,10 @@
 			 */
 
 			// width and height of svg
-			var svgWidth = 500;
-			var svgHeight = 500;
-
-			// width of axis
-			var yAxisWidth = 30;
-			var xAxisHeight = 15;
+			var svgWidth = 500,
+				svgHeight = 500,
+				yAxisWidth = 30,
+				xAxisHeight = 15;
 
 			// space between bars
 			var barPadding = 1;
@@ -40,9 +36,6 @@
 
 			// bar width
 			var barWidth = 50;
-
-			// bar height multiplication factor
-			var heightFactor = 1;
 
 			// width of diagram
 			var diagramWidth = svgWidth - (yAxisWidth + axisPadding);
@@ -56,11 +49,7 @@
 			 */
 		 	d3.csv("meteo.csv", function(error, data) {
 		 		// If error is not null, something went wrong.
-		 		if (error) {  
-          			console.log(error);
-		        } else {      
-		        	console.log(data[0]); 
-		        }
+		 		if (error) { console.log(error); }
 
 		        // change string data into ints
 	 			for (var i = 0; i < data.length; i++) {
@@ -111,17 +100,16 @@
 	 			}
 
 	 			year = data[0].year;
-
 	 			years = d3.keys(dataset);
-
-	 			console.log("years = " + years);
-
-	 			console.log(dataset);
 
 		 		// output data
 		 		makeGraph(dataset);
 
-		 		// keybinding
+		 		/* 
+				 *	UPDATE GRAPH ON KEYDOWN
+				 *	- left arrow key 	--> year--
+				 * 	- right arrow key 	--> year++
+				 */
 				window.focus();
 				d3.select(window).on("keydown", function() {
 					if (d3.event.keyCode == 37 && yearNo > 0) {
@@ -129,11 +117,12 @@
 					} else if (d3.event.keyCode == 39 && yearNo < 4) {
 						yearNo++;
 					}
-					console.log(d3.values(dataset[years[yearNo]]));
 					update();
 				});
 
+				// refresh DOM
 				function update() {
+					bars.exit();
 					svgContainer.remove()
 					bars.enter(d3.values(dataset[years[yearNo]]));
 
@@ -175,15 +164,13 @@
 					})
 					.attr("y", function(d) {
 						// = height - data value (bars get drawn from top-left corner)
-						return yScale(d) * heightFactor;
+						return yScale(d);
 					})
 					.attr("width", diagramWidth / 12 - barPadding)
 					.attr("height", function(d) {
 						// return height of bar, rightly scaled
-						return (diagramHeight - yScale(d)) * heightFactor;
+						return (diagramHeight - yScale(d));
 					});
-
-				bars.exit();
 
 				/* 
 				 *	ADD VALUE TO BARS
@@ -206,7 +193,7 @@
 					})
 					.attr("y", function(d) {
 						// = height - data value
-						return yScale(d) * heightFactor + 15;
+						return yScale(d) + 15;
 					})
 					.attr("font-family", "sans-serif")
 				    .attr("font-size", "11px")
@@ -270,11 +257,7 @@
 					.attr("class", "axis")
 					.attr("transform", "translate(" + yAxisWidth + ",0)")
 					.call(yAxis);
-
-				
 		 	}
-
-			
 
 		</script>
 	</body>
