@@ -141,10 +141,15 @@
 
 				/* 
 				 *	ADD Y SCALE
+				 *	+1 & -1 added to prevent outliers from
+				 *	falling off the graph.
 				 */
+	    		var yMax = Math.ceil(d3.max(d3.values(dataset[years[yearNo]]))) + 1;
+	    		var yMin = Math.floor(d3.min(d3.values(dataset[years[yearNo]]))) - 1;
+
 	    		var yScale = d3.scale.linear()
-	    			.domain([-5, d3.max(d3.values(dataset[years[yearNo]])) ])
-	    			.range([diagramHeight, -1]);
+	    			.domain([yMin, yMax])
+	    			.range([diagramHeight, 5]);
 
 				/* 
 				 *	DRAW BARS
