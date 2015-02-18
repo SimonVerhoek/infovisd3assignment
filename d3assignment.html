@@ -103,7 +103,7 @@
 	 					month = data[i].month;
 
 	 					// push month object in year object
-	 					dataset[year][month] = {year: data[i-1].year, month: data[i-1].month, meanTemp: meanTemp};
+	 					dataset[year][month] = {meanTemp: meanTemp};
 
 	 					// reset values
 	 					totalTemp = 0;
@@ -114,7 +114,7 @@
 	 			console.log(dataset);
 
 		 		// output data
-		 		//test(dataset);		
+		 		test(dataset);		
 		 	});
 
 		 	function test(dataset) {
@@ -129,10 +129,18 @@
 				/* 
 				 *	ADD Y SCALE
 				 */
+
+				console.log("test = " + d3.max(d3.values(dataset[2010]), function(d) {
+					return d3.max(d3.values(d));
+				}) );
+
+				console.log("test2 = " + dataset[2010][1].meanTemp);
+
 	    		var yScale = d3.scale.linear()
-	    			.domain([-1, d3.max(dataset, function(d) {
-	    				return d.meanTemp;
-	    			})])
+	    			.domain([-1, dataset[2010][1].meanTemp])
+	    			/*.domain([-1, d3.max(dataset, function(d) {
+	    				return d[2010][1].meanTemp;
+	    			})]))*/
 	    			.range([diagramHeight, -1]);	
 
 				/* 
