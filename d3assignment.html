@@ -18,6 +18,8 @@
 			var dataset = {};
 			//dataset[i].temperature
 
+			var bars;
+			var svgContainer;
 			/* 
 			 *	STATIC VALUES
 			 */
@@ -117,14 +119,34 @@
 	 			console.log(dataset);
 
 		 		// output data
-		 		makeGraph(dataset);		
+		 		makeGraph(dataset);
+
+		 		// keybinding
+				window.focus();
+				d3.select(window).on("keydown", function() {
+					if (d3.event.keyCode == 37 && yearNo > 0) {
+						yearNo--;
+					} else if (d3.event.keyCode == 39 && yearNo < 4) {
+						yearNo++;
+					}
+					console.log(d3.values(dataset[years[yearNo]]));
+					update();
+				});
+
+				function update() {
+					svgContainer.remove()
+					bars.enter(d3.values(dataset[years[yearNo]]));
+
+					makeGraph(dataset);	
+				}
+
 		 	});
 
 		 	function makeGraph(dataset) {
 		 		/* 
 				 *	DRAW SVG CONTAINER
 				 */
-				var svgContainer = d3.select("body")
+				svgContainer = d3.select("body")
 					.append("svg")
 					.attr("width", svgWidth)
 					.attr("height", svgHeight);
@@ -139,9 +161,10 @@
 				/* 
 				 *	DRAW BARS
 				 */
-				svgContainer.selectAll("rect")
-					.data(d3.values(dataset[years[yearNo]]))
-					.enter()
+				bars = svgContainer.selectAll("rect")
+					.data(d3.values(dataset[years[yearNo]]));
+					
+				bars.enter()
 					.append("rect")
 					.attr("x", function(d, i) {
 						// divide bars over total width of svgContainer
@@ -159,6 +182,8 @@
 						// return height of bar, rightly scaled
 						return (diagramHeight - yScale(d)) * heightFactor;
 					});
+
+				bars.exit();
 
 				/* 
 				 *	ADD VALUE TO BARS
@@ -245,6 +270,8 @@
 					.attr("class", "axis")
 					.attr("transform", "translate(" + yAxisWidth + ",0)")
 					.call(yAxis);
+
+				
 		 	}
 
 			
