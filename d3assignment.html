@@ -103,7 +103,7 @@
 	 					month = data[i].month;
 
 	 					// push month object in year object
-	 					dataset[year][month] = {meanTemp: meanTemp};
+	 					dataset[year][month] = meanTemp;
 
 	 					// reset values
 	 					totalTemp = 0;
@@ -130,16 +130,12 @@
 				 *	ADD Y SCALE
 				 */
 
-				console.log("test = " + d3.max(d3.values(dataset[2010]), function(d) {
-					return d3.max(d3.values(d));
-				}) );
+				console.log("test = " + d3.max(d3.values(dataset[2010])) );
 
 				//console.log("test2 = " + dataset[2010][1].meanTemp);
 
 	    		var yScale = d3.scale.linear()
-	    			.domain([-1, d3.max(d3.values(dataset[2010]), function(d) {
-	    				return d3.max(d3.values(d));
-	    			}) ])
+	    			.domain([-1, d3.max(d3.values(dataset[2010]))])
 	    			.range([diagramHeight, -1]);
 
     			console.log("yScale = " + yScale(dataset[2010][1]));
@@ -148,13 +144,13 @@
 				 *	DRAW BARS
 				 */
 				svgContainer.selectAll("rect")
-					.data(dataset)
+					.data(d3.values(dataset[2010]))
 					.enter()
 					.append("rect")
 					.attr("x", function(d, i) {
 						// divide bars over total width of svgContainer
 						return i * 
-							(diagramWidth / dataset.length) + 
+							(diagramWidth / 12) + 
 							yAxisWidth + 
 							axisPadding;
 					})
@@ -162,7 +158,7 @@
 						// = height - data value (bars get drawn from top-left corner)
 						return yScale(d) * heightFactor;
 					})
-					.attr("width", diagramWidth / dataset.length - barPadding)
+					.attr("width", diagramWidth / 12 - barPadding)
 					.attr("height", function(d) {
 						// return height of bar, rightly scaled
 						return (diagramHeight - yScale(d)) * heightFactor;
@@ -172,7 +168,7 @@
 				 *	ADD VALUE TO BARS
 				 */
 				svgContainer.selectAll("text")
-					.data(dataset)
+					.data(d3.values(dataset[2010]))
 					.enter()
 					.append("text")
 					.text(function(d) {
@@ -181,8 +177,8 @@
 					.attr("x", function(d, i) {
 						// center label horizontally inside bar
 						return i * 
-							(diagramWidth / dataset.length) + 
-							(diagramWidth / dataset.length) / 2 +
+							(diagramWidth / 12) + 
+							(diagramWidth / 12) / 2 +
 							yAxisWidth + 
 							axisPadding - 
 							(barPadding / 2);
@@ -226,11 +222,11 @@
 				 *	ADD YEAR LABEL TO DIAGRAM
 				 */
 				svgContainer.selectAll("year")
-					.data(dataset)
+					.data(d3.values(dataset[2010]))
 					.enter()
 					.append("text")
 					.text(function(d) {
-						return d.year
+						return 2010;
 					})
 					.attr("x", 50)
 					.attr("y", 40)
